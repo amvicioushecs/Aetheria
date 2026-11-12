@@ -1,0 +1,62 @@
+/* Continental Funeral Home — design tokens
+ * Derived from /workspace/tokens/tokens.css (extracted design system).
+ * Fonts are loaded via <link> in each page head (Cormorant Garamond + Outfit). */
+:root {
+  /* colour — neutrals */
+  --c-bg: #fafafa;
+  --c-surface: #ffffff;
+  --c-fg: #212121;
+  --c-muted: #666666;
+  --c-border: #e6e6e6;
+  --c-subtle: #f5f5f5;
+
+  /* colour — brand */
+  --c-plum: #4a2c59;
+  --c-plum-hover: #3d2449;
+  --c-ink: #2b1934;
+  --c-lavender: #9b7ebd;
+  --c-lavender-2: #a17fbd;
+  --c-lilac: #eadcf8;
+  --c-lilac-2: #efdef7;
+  --c-lilac-wash: #f6effb;
+
+  /* typography */
+  --font-serif: 'Cormorant Garamond', 'Cormorant', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Outfit', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --fs-h1: clamp(2.6rem, 1.6rem + 4.2vw, 4.5rem);   /* 72px desktop */
+  --fs-h2: clamp(2.1rem, 1.5rem + 2.4vw, 3rem);     /* 48px */
+  --fs-h3: clamp(1.55rem, 1.3rem + 0.9vw, 1.875rem);/* 30px */
+  --fs-h4: 1.5rem;                                  /* 24px */
+  --fs-body: 1rem;
+  --fs-small: .875rem;
+  --fs-eyebrow: .75rem;
+  --lh-body: 1.5;
+  --lh-relaxed: 1.75;
+  --tracking-h1: -1.8px;
+  --tracking-eyebrow: .25em;
+
+  /* radius */
+  --radius: 1rem;
+  --radius-card: 1.5rem;
+  --radius-input: .75rem;
+  --radius-pill: 9999px;
+
+  /* shadow */
+  --shadow-soft: 0 8px 30px rgba(0,0,0,.04);
+  --shadow-glass: 0 4px 30px rgba(74,44,89,.05);
+  --shadow-glow: 0 0 24px rgba(155,126,189,.35);
+  --shadow-glow-lg: 0 0 30px rgba(155,126,189,.35);
+  --shadow-lift: 0 18px 40px -12px rgba(74,44,89,.18);
+  --ring: 0 0 0 2px rgba(155,126,189,.5);
+
+  /* glass */
+  --glass-bg: rgba(255,255,255,.72);
+  --glass-border: rgba(255,255,255,.6);
+  --glass-blur: blur(20px);
+
+  /* layout */
+  --container: 1240px;
+  --gutter: clamp(1.25rem, 4vw, 4rem);
+  --section-y: clamp(4.5rem, 8vw, 8rem);
+  --ease: cubic-bezier(.22,.61,.36,1);
+}

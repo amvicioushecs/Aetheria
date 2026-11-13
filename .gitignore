@@ -5,3 +5,4 @@
 .grok/
 .impeccable/
 redesign_site.tgz
+node_modules/

@@ -1,4 +1,4 @@
-/* Continental Funeral Home — site styles (requires tokens.css) */
+/* Aetheria Funeral Homes — site styles (requires tokens.css) */
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 body {
@@ -98,16 +98,8 @@ p { margin: 0 0 1em; }
 .nav-wrap { display: flex; align-items: center; justify-content: space-between; height: 84px; gap: 1.5rem; }
 .brand { display: inline-flex; align-items: center; gap: .85rem; text-decoration: none; color: var(--c-ink); }
 .brand:hover { color: var(--c-ink); }
-.brand__mark {
-  width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; flex: none;
-  background: radial-gradient(circle at 30% 25%, #6a4680, var(--c-plum) 60%, var(--c-ink));
-  color: #fff; font-family: var(--font-serif); font-size: 1.15rem; font-weight: 500; letter-spacing: .02em;
-  box-shadow: 0 0 0 4px rgba(234,220,248,.7), 0 6px 18px rgba(74,44,89,.25);
-}
-.brand__mark i { font-style: italic; font-weight: 400; margin-left: -.06em; color: var(--c-lilac); }
-.brand__text { display: flex; flex-direction: column; line-height: 1; }
-.brand__name { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 500; letter-spacing: -.01em; }
-.brand__sub { font-size: .62rem; font-weight: 600; letter-spacing: .3em; text-transform: uppercase; color: var(--c-lavender); margin-top: .35rem; }
+.brand__logo { display: block; height: 52px; width: auto; }
+.site-footer .brand__logo { height: 60px; }
 .nav { display: flex; align-items: center; gap: 2.25rem; }
 .nav ul { list-style: none; display: flex; gap: 2rem; margin: 0; padding: 0; }
 .nav a.nav__link { text-decoration: none; color: var(--c-fg); font-size: .95rem; font-weight: 400; position: relative; padding: .4rem 0; }
@@ -347,7 +339,6 @@ textarea.input { min-height: 140px; resize: vertical; }
 .site-footer a:hover { color: var(--c-lilac); }
 .footer-top { display: grid; grid-template-columns: 1.4fr 2.6fr; gap: 4rem; padding-bottom: 3rem; border-bottom: 1px solid rgba(255,255,255,.1); }
 .site-footer .brand { color: #fff; }
-.site-footer .brand__sub { color: var(--c-lilac); }
 .footer-about p { margin: 1.5rem 0; line-height: 1.7; max-width: 26rem; }
 .footer-contact { display: grid; gap: .55rem; }
 .footer-contact div { display: flex; gap: .6rem; align-items: baseline; }
@@ -424,14 +415,13 @@ textarea.input { min-height: 140px; resize: vertical; }
   .stat-row { grid-template-columns: 1fr 1fr 1fr; }
   .obit-tools { top: 80px; }
   .nav-wrap { height: 72px; }
-  .brand__name { font-size: 1.25rem; }
-  .brand__mark { width: 40px; height: 40px; font-size: 1rem; }
+  .brand__logo { height: 42px; }
 }
 @media (max-width: 639px) {
   .topbar .container { justify-content: center; }
   .topbar__items:last-child { display: none; }
   .nav__cta .btn--primary span.lbl-long { display: none; }
-  .brand__sub { display: none; }
+  .brand__logo { height: 34px; }
   .obit-card__body { padding: 1rem; }
   .obit-card__name { font-size: 1.2rem; }
   .obit-card__foot .go span { display: none; }

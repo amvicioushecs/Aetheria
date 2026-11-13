@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Static site builder for the Continental Funeral Home redesign.
+"""Static site builder for the Aetheria Funeral Homes redesign.
 
 Reads /workspace/obituaries.json and /workspace/content_pages.json and renders
 all HTML pages into this directory (the folder containing build.py).
@@ -29,6 +29,8 @@ PHONE_MAIN = "1 (800) 990-0890"
 PHONE_TEXT = "1 (323) 987-5025"
 PHONE_FAX = "1 (800) 604-4590"
 EMAIL = "Counseling@funeralcaregroup.com"
+SITE_NAME = "Aetheria Funeral Homes"
+LEGACY_NAME = "Continental Funeral Home"  # brand name used in the source content JSON
 
 LOCATIONS = [
     dict(key="east-los-angeles", name="East Los Angeles", lic="FD 1915",
@@ -53,7 +55,7 @@ def tel(num):
 def maps_url(loc):
     from urllib.parse import quote_plus
     return "https://www.google.com/maps/search/?api=1&query=" + quote_plus(
-        f"Continental Funeral Home {loc['street']} {loc['city']}")
+        f"{SITE_NAME} {loc['street']} {loc['city']}")
 
 
 # --------------------------------------------------------------------------
@@ -268,10 +270,10 @@ NAV = [("index.html", "Home"), ("obituaries.html", "Obituaries"), ("services.htm
        ("about.html", "About"), ("contact.html", "Contact")]
 
 
-def brand(root):
-    return f'''<a class="brand" href="{root}index.html" aria-label="Continental Funeral Home — home">
-  <span class="brand__mark" aria-hidden="true"><span>C<i>f</i></span></span>
-  <span class="brand__text"><span class="brand__name">Continental Funeral Home</span><span class="brand__sub">Five California locations</span></span>
+def brand(root, light=False):
+    logo = "aetheria-logo-light.png" if light else "aetheria-logo.png"
+    return f'''<a class="brand" href="{root}index.html" aria-label="{SITE_NAME} — home">
+  <img class="brand__logo" src="{root}assets/img/{logo}" alt="{SITE_NAME}" width="1313" height="280">
 </a>'''
 
 
@@ -306,7 +308,7 @@ def footer(root):
   <div class="container">
     <div class="footer-top">
       <div class="footer-about">
-        {brand(root)}
+        {brand(root, light=True)}
         <p>Dedicated to providing services with integrity, respect, professionalism, care, and the compassion that defines us.</p>
         <div class="footer-contact">
           <div><small>24/7</small><a href="{tel(PHONE_MAIN)}">{PHONE_MAIN}</a></div>
@@ -322,7 +324,7 @@ def footer(root):
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© {YEAR} Continental Funeral Home. All rights reserved.</span>
+      <span>© {YEAR} {SITE_NAME}. All rights reserved.</span>
       <nav aria-label="Footer">{"".join(f'<a href="{root}{h}">{l}</a>' for h, l in NAV)}</nav>
     </div>
   </div>
@@ -331,6 +333,7 @@ def footer(root):
 
 def page(title, desc, body, root="", active="", scripts=()):
     js = "".join(f'<script src="{root}assets/{s}" defer></script>' for s in ("site.js",) + tuple(scripts))
+    body = body.replace(LEGACY_NAME, SITE_NAME)
     return f'''<!doctype html>
 <html lang="en">
 <head>
@@ -436,7 +439,7 @@ def build_index(C, obits):
 <section class="hero" aria-labelledby="hero-h">
   <div class="container hero__grid">
     <div>
-      <span class="eyebrow fade-up">Continental Funeral Home</span>
+      <span class="eyebrow fade-up">{SITE_NAME}</span>
       <h1 id="hero-h" class="fade-up d1">Honoring lives, <em>with dignity</em> and care</h1>
       <p class="lead fade-up d2">{esc(welcome.split(". At Continental")[0] + ".")}</p>
       <div class="btn-row fade-up d3">
@@ -497,8 +500,8 @@ def build_index(C, obits):
 </section>
 {cta_band("")}
 '''
-    return page("Continental Funeral Home — Honoring lives with dignity and care",
-                "Continental Funeral Home offers funeral, cremation, veterans and pre-planning services across five California locations. Available 24/7 at 1 (800) 990-0890.",
+    return page("Aetheria Funeral Homes — Honoring lives with dignity and care",
+                "Aetheria Funeral Homes offers funeral, cremation, veterans and pre-planning services across five California locations. Available 24/7 at 1 (800) 990-0890.",
                 body, "", "index.html")
 
 
@@ -547,8 +550,8 @@ def build_obituaries(obits):
 </section>
 {cta_band("", "Obituary alerts", "Can’t find who you’re <em>looking for?</em>", "Our counselors are available 24/7 to help you locate service information for a loved one.")}
 '''
-    return page("Obituaries — Continental Funeral Home",
-                f"Browse {len(obits)} obituaries and service details from Continental Funeral Home.",
+    return page("Obituaries — Aetheria Funeral Homes",
+                f"Browse {len(obits)} obituaries and service details from Aetheria Funeral Homes.",
                 body, "", "obituaries.html", scripts=("obits.js",))
 
 
@@ -586,7 +589,7 @@ def build_detail(o, prev_o, next_o):
     if o["age"]:
         meta.append(f'<span class="pill-tag">Age {esc(o["age"])}</span>')
     if loc:
-        meta.append(f'<span class="pill-tag">{icon("pin")}Continental Funeral Home · {esc(loc["name"])}</span>')
+        meta.append(f'<span class="pill-tag">{icon("pin")}Aetheria Funeral Homes · {esc(loc["name"])}</span>')
     dates = []
     if o["birth_str"]:
         dates.append(f'<span>{esc(o["birth_str"])}</span>')
@@ -620,7 +623,7 @@ def build_detail(o, prev_o, next_o):
     if loc:
         loc_aside = f'''<div class="card aside-card">
   <span class="eyebrow">Arrangements by</span>
-  <h3>Continental Funeral Home · {esc(loc["name"])}</h3>
+  <h3>Aetheria Funeral Homes · {esc(loc["name"])}</h3>
   <address>{esc(loc["street"])}<br>{esc(loc["city"])}<br>{esc(loc["lic"])}</address>
   <a class="btn btn--ghost btn--sm" href="{tel(loc["phone"])}">{icon("phone")}{esc(loc["phone"])}</a>
 </div>'''
@@ -688,8 +691,8 @@ def build_detail(o, prev_o, next_o):
   </div>
 </section>
 '''
-    desc = f'Obituary and service information for {o["name"]}' + (f', {o["years"]}' if o["years"] else "") + ". Continental Funeral Home."
-    return page(f'{o["name"]} — Obituary | Continental Funeral Home', desc, body, root, "obituaries.html")
+    desc = f'Obituary and service information for {o["name"]}' + (f', {o["years"]}' if o["years"] else "") + ". Aetheria Funeral Homes."
+    return page(f'{o["name"]} — Obituary | Aetheria Funeral Homes', desc, body, root, "obituaries.html")
 
 
 def opt(title, text, extra=""):
@@ -796,8 +799,8 @@ def build_services(C):
 </section>
 {cta_band("")}
 '''
-    return page("Services — Continental Funeral Home",
-                "Funeral, burial, cremation, repatriation, veterans, and pre-planning services from Continental Funeral Home.",
+    return page("Services — Aetheria Funeral Homes",
+                "Funeral, burial, cremation, repatriation, veterans, and pre-planning services from Aetheria Funeral Homes.",
                 body, "", "services.html")
 
 
@@ -869,8 +872,8 @@ def build_about(C):
 </section>
 <div id="contact">{cta_band("")}</div>
 '''
-    return page("About — Continental Funeral Home",
-                "Founded and directed by Magda Maldonado, Continental Funeral Home has served families for more than 25 years across five California locations.",
+    return page("About — Aetheria Funeral Homes",
+                "Founded and directed by Magda Maldonado, Aetheria Funeral Homes has served families for more than 25 years across five California locations.",
                 body, "", "about.html")
 
 
@@ -921,8 +924,8 @@ def build_contact(C):
   </div>
 </section>
 '''
-    return page("Contact — Continental Funeral Home",
-                "Contact Continental Funeral Home 24/7 by phone, text, fax, or email, or visit one of five locations.",
+    return page("Contact — Aetheria Funeral Homes",
+                "Contact Aetheria Funeral Homes 24/7 by phone, text, fax, or email, or visit one of five locations.",
                 body, "", "contact.html")
 
 

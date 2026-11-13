@@ -728,8 +728,8 @@ def build_services(C):
     def titlecase(s):
         return " ".join(w.capitalize() if w.isupper() and len(w) > 3 else w for w in s.split()).replace("And ", "and ")
 
-    def section(id_, ic, eyebrow, title, intro_html, content):
-        return f'''<div class="svc-section" id="{id_}">
+    def section(id_, ic, eyebrow, title, intro_html, content, mod=""):
+        return f'''<div class="svc-section{mod}" id="{id_}">
   <div class="svc-section__intro">
     <span class="icon-badge">{icon(ic)}</span>
     <span class="eyebrow">{eyebrow}</span>
@@ -745,16 +745,20 @@ def build_services(C):
         ("when-death-occurs", "When Death Occurs"), ("grief", "Grief Support")])
 
     body = f'''
-<section class="page-hero" aria-labelledby="sv-h">
+<section class="page-hero page-hero--silk" aria-labelledby="sv-h">
+  <div class="silk" aria-hidden="true"><span></span><span></span><span></span></div>
   <div class="container">
     <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span aria-hidden="true">/</span><span aria-current="page">Services</span></nav>
     <span class="eyebrow">Our Services</span>
     <h1 id="sv-h">Services shaped around <em>your wishes</em></h1>
     <p class="lead">{esc(C.sec("/", "Welcome to Continental Funeral Home FD 1915")[0].split(". At Continental Funeral Home we appreciate")[0].split("defines us. ")[-1])}.</p>
-    <nav class="toc" aria-label="Jump to a service">{toc}</nav>
   </div>
 </section>
-<section class="section" style="padding-top:clamp(1rem,3vw,2rem)">
+<nav class="svc-nav" aria-label="Jump to a service">
+  <div class="container"><div class="svc-nav__chips">{toc}</div></div>
+  <span class="svc-nav__progress" aria-hidden="true"></span>
+</nav>
+<section class="svc-flow">
   <div class="container">
   {section("funeral", "leaf", "Funeral &amp; Burial", "Funeral &amp; burial services",
            f'<p>{esc(C.first("/", "Burial Options"))}</p>',
@@ -784,14 +788,14 @@ def build_services(C):
            f'<p>{esc(pre[0])}</p>',
            '<div class="opt-grid">' + opt("Peace of mind", pre[1]) + opt("Plan from home", pre[2].replace(" by clicking the button below", "")
            .replace(" See the form below for details.", ""))
-           + f'<article class="card opt opt--wide" style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap"><div><h3>Start your pre-arrangements</h3><p>Speak with a funeral counselor at {PHONE_MAIN}.</p></div><a class="btn btn--primary" href="contact.html">Plan a Service {icon("arrow")}</a></article>'
+           + f'<article class="card opt opt--wide opt--cta" style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap"><div><h3>Start your pre-arrangements</h3><p>Speak with a funeral counselor at {PHONE_MAIN}.</p></div><a class="btn btn--light" href="contact.html">Plan a Service {icon("arrow")}</a></article>'
            + "</div>")}
   {section("arrangements", "box", "Making Arrangements", "Caskets, urns &amp; keepsakes",
            f'<p>{esc(C.sec("/making-arrangements", "only the finest quality")[0])}</p>',
            '<div class="opt-grid">' + "".join(opt(h, t) for h, t in merch) + "</div>")}
   {section("when-death-occurs", "compass", "When Death Occurs", "What to do first",
            f'<p>{esc(when_intro)}</p>',
-           '<div class="steps">' + "".join(f'<article class="card step"><h3>{esc(h.replace("/Staff", " &amp; staff").replace("&amp;", "&"))}</h3><p>{esc(t)}</p></article>' for h, t in steps) + "</div>")}
+           '<div class="steps">' + "".join(f'<article class="card step"><h3>{esc(h.replace("/Staff", " &amp; staff").replace("&amp;", "&"))}</h3><p>{esc(t)}</p></article>' for h, t in steps) + "</div>", " svc-section--dark")}
   {section("grief", "heart", "Grief Support", "Support that continues",
            f'<p>{esc(grief_intro)}</p><p>{esc(grief_year)}</p>',
            '<div class="opt-grid">' + "".join(opt(titlecase(h), t) for h, t in grief) + "</div>")}

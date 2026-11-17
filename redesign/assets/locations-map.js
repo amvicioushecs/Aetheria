@@ -21,7 +21,7 @@
   // TODO: replace with a restricted production Google Maps Platform API key.
   // Leave this placeholder as-is until a key is created. Never commit a real secret
   // in a public pull request if the repo is public — prefer a deploy-time substitution.
-  const AETHERIA_GOOGLE_MAPS_API_KEY = "YOUR_GOOGLE_MAPS_API_KEY";
+  const AETHERIA_GOOGLE_MAPS_API_KEY = "AIzaSyBkB6sJk6WQPfiD5JTbK_VKmtL42x34BBk";
 
   const ATTRIBUTION_ID = "gmp_git_agentskills_v1";
   const PIN_BACKGROUND = "#4a2c59";

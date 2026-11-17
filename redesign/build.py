@@ -54,8 +54,8 @@ def tel(num):
 
 def maps_url(loc):
     from urllib.parse import quote_plus
-    return "https://www.google.com/maps/search/?api=1&query=" + quote_plus(
-        f"{SITE_NAME} {loc['street']} {loc['city']}")
+    return "https://www.google.com/maps/dir/?api=1&destination=" + quote_plus(
+        f"{loc['street']}, {loc['city']}")
 
 
 # --------------------------------------------------------------------------
@@ -331,7 +331,7 @@ def footer(root):
 </footer>'''
 
 
-def page(title, desc, body, root="", active="", scripts=()):
+def page(title, desc, body, root="", active="", scripts=(), extra_head=""):
     js = "".join(f'<script src="{root}assets/{s}" defer></script>' for s in ("site.js",) + tuple(scripts))
     body = body.replace(LEGACY_NAME, SITE_NAME)
     return f'''<!doctype html>
@@ -347,7 +347,7 @@ def page(title, desc, body, root="", active="", scripts=()):
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&amp;family=Outfit:wght@300;400;500;600;700&amp;display=swap">
 <link rel="stylesheet" href="{root}assets/tokens.css">
 <link rel="stylesheet" href="{root}assets/site.css">
-{js}
+{extra_head}{js}
 </head>
 <body>
 {header(root, active)}
@@ -950,8 +950,14 @@ def build_contact(C):
         <div id="locations-map" class="locations-map" role="region" aria-label="Map of all Aetheria Funeral Homes locations"></div>
         <div class="locations-map-fallback" id="locations-map-fallback" hidden>
           <p class="locations-map-fallback__title">Interactive map</p>
-          <p data-fallback-body>An interactive map of all five locations will appear here once a Google Maps API key is added. Until then, use the list below and the Get directions links — they open Google Maps in a new tab.</p>
+          <p data-fallback-body>The interactive map could not be loaded. Use the location list below and the Get directions links — they open Google Maps in a new tab.</p>
         </div>
+        <noscript>
+          <div class="locations-map-fallback">
+            <p class="locations-map-fallback__title">Interactive map</p>
+            <p>JavaScript is required to show the map. Use the location list below and the Get directions links — they open Google Maps in a new tab.</p>
+          </div>
+        </noscript>
         <p class="sr-only" id="locations-map-status" role="status" aria-live="polite"></p>
       </div>
       <div class="loc-list" id="locations-list">{locs}</div>
@@ -961,7 +967,9 @@ def build_contact(C):
 '''
     return page("Contact — Aetheria Funeral Homes",
                 "Contact Aetheria Funeral Homes 24/7 by phone, text, fax, or email, or visit one of five locations.",
-                body, "", "contact.html", scripts=("locations-map.js",))
+                body, "", "contact.html",
+                scripts=("vendor/leaflet/leaflet.js", "locations-map.js"),
+                extra_head='<link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">\n')
 
 
 # --------------------------------------------------------------------------

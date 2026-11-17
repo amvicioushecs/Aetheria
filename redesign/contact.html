@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="assets/tokens.css">
 <link rel="stylesheet" href="assets/site.css">
 <script src="assets/site.js" defer></script>
+<script src="assets/locations-map.js" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -71,40 +72,67 @@
     </form>
   </div>
 </section>
-<section class="section section--tight" aria-labelledby="cl-h">
+<section class="section section--tight" aria-labelledby="cl-h" id="locations">
   <div class="container">
-    <div class="section-head"><span class="eyebrow">Our Locations</span><h2 id="cl-h">Visit us in person</h2></div>
-    <div class="loc-list"><article class="card loc-card">
+    <div class="section-head"><span class="eyebrow">Our Locations</span><h2 id="cl-h">Visit us in person</h2>
+      <p class="lead">All five California funeral homes are shown on one map. Choose a location for details and directions.</p>
+    </div>
+    <div class="locations-map-layout">
+      <div class="locations-map-panel">
+        <div id="locations-map" class="locations-map" role="region" aria-label="Map of all Aetheria Funeral Homes locations"></div>
+        <div class="locations-map-fallback" id="locations-map-fallback" hidden>
+          <p class="locations-map-fallback__title">Interactive map</p>
+          <p data-fallback-body>An interactive map of all five locations will appear here once a Google Maps API key is added. Until then, use the list below and the Get directions links — they open Google Maps in a new tab.</p>
+        </div>
+        <p class="sr-only" id="locations-map-status" role="status" aria-live="polite"></p>
+      </div>
+      <div class="loc-list" id="locations-list"><article class="card loc-card" id="location-east-los-angeles" data-location-id="east-los-angeles" data-name="East Los Angeles" data-address="5353 East Beverly Blvd., East Los Angeles, CA 90022" data-phone="1 (800) 990-0890" data-phone-href="tel:+18009900890" data-directions="https://www.google.com/maps/search/?api=1&amp;query=Aetheria+Funeral+Homes+5353+East+Beverly+Blvd.+East+Los+Angeles%2C+CA+90022">
   <span class="lic">FD 1915</span>
   <h3>East Los Angeles</h3>
   <address>5353 East Beverly Blvd.<br>East Los Angeles, CA 90022</address>
   <a class="tel" href="tel:+18009900890"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>1 (800) 990-0890</a>
-  <a class="btn btn--secondary btn--sm" href="https://www.google.com/maps/search/?api=1&amp;query=Aetheria+Funeral+Homes+5353+East+Beverly+Blvd.+East+Los+Angeles%2C+CA+90022" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36z"/></svg>Get directions</a>
-</article><article class="card loc-card">
+  <div class="loc-card__actions">
+    <a class="btn btn--secondary btn--sm" href="https://www.google.com/maps/search/?api=1&amp;query=Aetheria+Funeral+Homes+5353+East+Beverly+Blvd.+East+Los+Angeles%2C+CA+90022" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36z"/></svg>Get directions<span class="sr-only"> (opens in a new tab)</span></a>
+    <button type="button" class="btn btn--ghost btn--sm loc-card__show" data-show-location="east-los-angeles">Show on map</button>
+  </div>
+</article><article class="card loc-card" id="location-santa-ana" data-location-id="santa-ana" data-name="Santa Ana" data-address="2525 N Grand Ave, Suite K, Santa Ana, CA 92705" data-phone="1-714-771-1238" data-phone-href="tel:+17147711238" data-directions="https://www.google.com/maps/search/?api=1&amp;query=Aetheria+Funeral+Homes+2525+N+Grand+Ave%2C+Suite+K+Santa+Ana%2C+CA+92705">
   <span class="lic">FD 2079</span>
   <h3>Santa Ana</h3>
   <address>2525 N Grand Ave, Suite K<br>Santa Ana, CA 92705</address>
   <a class="tel" href="tel:+17147711238"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>1-714-771-1238</a>
-  <a class="btn btn--secondary btn--sm" href="https://www.google.com/maps/search/?api=1&amp;query=Aetheria+Funeral+Homes+2525+N+Grand+Ave%2C+Suite+K+Santa+Ana%2C+CA+92705" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36z"/></svg>Get directions</a>
-</article><article class="card loc-card">
+  <div class="loc-card__actions">
+    <a class="btn btn--secondary btn--sm" href="https://www.google.com/maps/search/?api=1&amp;query=Aetheria+Funeral+Homes+2525+N+Grand+Ave%2C+Suite+K+Santa+Ana%2C+CA+92705" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36z"/></svg>Get directions<span class="sr-only"> (opens in a new tab)</span></a>
+    <button type="button" class="btn btn--ghost btn--sm loc-card__show" data-show-location="santa-ana">Show on map</button>
+  </div>
+</article><article class="card loc-card" id="location-ontario" data-location-id="ontario" data-name="Ontario" data-address="2442 S. Euclid Ave, Ontario, CA 91762" data-phone="1-909-509-5909" data-phone-href="tel:+19095095909" data-directions="https://www.google.com/maps/search/?api=1&amp;query=Aetheria+Funeral+Homes+2442+S.+Euclid+Ave+Ontario%2C+CA+91762">
   <span class="lic">FD 2111</span>
   <h3>Ontario</h3>
   <address>2442 S. Euclid Ave<br>Ontario, CA 91762</address>
   <a class="tel" href="tel:+19095095909"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>1-909-509-5909</a>
-  <a class="btn btn--secondary btn--sm" href="https://www.google.com/maps/search/?api=1&amp;query=Aetheria+Funeral+Homes+2442+S.+Euclid+Ave+Ontario%2C+CA+91762" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36z"/></svg>Get directions</a>
-</article><article class="card loc-card">
+  <div class="loc-card__actions">
+    <a class="btn btn--secondary btn--sm" href="https://www.google.com/maps/search/?api=1&amp;query=Aetheria+Funeral+Homes+2442+S.+Euclid+Ave+Ontario%2C+CA+91762" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36z"/></svg>Get directions<span class="sr-only"> (opens in a new tab)</span></a>
+    <button type="button" class="btn btn--ghost btn--sm loc-card__show" data-show-location="ontario">Show on map</button>
+  </div>
+</article><article class="card loc-card" id="location-hawthorne" data-location-id="hawthorne" data-name="Hawthorne" data-address="13806 Hawthorne Blvd, Hawthorne, CA 90250" data-phone="1-424-888-7919" data-phone-href="tel:+14248887919" data-directions="https://www.google.com/maps/search/?api=1&amp;query=Aetheria+Funeral+Homes+13806+Hawthorne+Blvd+Hawthorne%2C+CA+90250">
   <span class="lic">FD 2022</span>
   <h3>Hawthorne</h3>
   <address>13806 Hawthorne Blvd<br>Hawthorne, CA 90250</address>
   <a class="tel" href="tel:+14248887919"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>1-424-888-7919</a>
-  <a class="btn btn--secondary btn--sm" href="https://www.google.com/maps/search/?api=1&amp;query=Aetheria+Funeral+Homes+13806+Hawthorne+Blvd+Hawthorne%2C+CA+90250" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36z"/></svg>Get directions</a>
-</article><article class="card loc-card">
+  <div class="loc-card__actions">
+    <a class="btn btn--secondary btn--sm" href="https://www.google.com/maps/search/?api=1&amp;query=Aetheria+Funeral+Homes+13806+Hawthorne+Blvd+Hawthorne%2C+CA+90250" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36z"/></svg>Get directions<span class="sr-only"> (opens in a new tab)</span></a>
+    <button type="button" class="btn btn--ghost btn--sm loc-card__show" data-show-location="hawthorne">Show on map</button>
+  </div>
+</article><article class="card loc-card" id="location-oakland" data-location-id="oakland" data-name="Oakland" data-address="5500 Foothill Blvd, Oakland, CA 94605" data-phone="1-510-261-1105" data-phone-href="tel:+15102611105" data-directions="https://www.google.com/maps/search/?api=1&amp;query=Aetheria+Funeral+Homes+5500+Foothill+Blvd+Oakland%2C+CA+94605">
   <span class="lic">FD 837</span>
   <h3>Oakland</h3>
   <address>5500 Foothill Blvd<br>Oakland, CA 94605</address>
   <a class="tel" href="tel:+15102611105"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>1-510-261-1105</a>
-  <a class="btn btn--secondary btn--sm" href="https://www.google.com/maps/search/?api=1&amp;query=Aetheria+Funeral+Homes+5500+Foothill+Blvd+Oakland%2C+CA+94605" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36z"/></svg>Get directions</a>
+  <div class="loc-card__actions">
+    <a class="btn btn--secondary btn--sm" href="https://www.google.com/maps/search/?api=1&amp;query=Aetheria+Funeral+Homes+5500+Foothill+Blvd+Oakland%2C+CA+94605" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36z"/></svg>Get directions<span class="sr-only"> (opens in a new tab)</span></a>
+    <button type="button" class="btn btn--ghost btn--sm loc-card__show" data-show-location="oakland">Show on map</button>
+  </div>
 </article></div>
+    </div>
   </div>
 </section>
 

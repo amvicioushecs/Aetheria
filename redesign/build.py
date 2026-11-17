@@ -361,14 +361,33 @@ def page(title, desc, body, root="", active="", scripts=()):
 
 
 def loc_card(l, cls="card loc-card", with_btn=False):
-    btn = (f'<a class="btn btn--secondary btn--sm" href="{esc(maps_url(l))}" target="_blank" rel="noopener">'
-           f'{icon("compass")}Get directions</a>') if with_btn else ""
-    return f'''<article class="{cls}">
+    address = f'{l["street"]}, {l["city"]}'
+    maps = maps_url(l)
+    attrs = (
+        f'id="location-{esc(l["key"])}" '
+        f'data-location-id="{esc(l["key"])}" '
+        f'data-name="{esc(l["name"])}" '
+        f'data-address="{esc(address)}" '
+        f'data-phone="{esc(l["phone"])}" '
+        f'data-phone-href="{esc(tel(l["phone"]))}" '
+        f'data-directions="{esc(maps)}"'
+    )
+    actions = ""
+    if with_btn:
+        actions = (
+            '<div class="loc-card__actions">'
+            f'<a class="btn btn--secondary btn--sm" href="{esc(maps)}" target="_blank" rel="noopener noreferrer">'
+            f'{icon("compass")}Get directions<span class="sr-only"> (opens in a new tab)</span></a>'
+            f'<button type="button" class="btn btn--ghost btn--sm loc-card__show" data-show-location="{esc(l["key"])}">'
+            'Show on map</button>'
+            '</div>'
+        )
+    return f'''<article class="{cls}" {attrs}>
   <span class="lic">{esc(l["lic"])}</span>
   <h3>{esc(l["name"])}</h3>
   <address>{esc(l["street"])}<br>{esc(l["city"])}</address>
   <a class="tel" href="{tel(l["phone"])}">{icon("phone")}{esc(l["phone"])}</a>
-  {btn}
+  {actions}
 </article>'''
 
 
@@ -921,16 +940,28 @@ def build_contact(C):
     </form>
   </div>
 </section>
-<section class="section section--tight" aria-labelledby="cl-h">
+<section class="section section--tight" aria-labelledby="cl-h" id="locations">
   <div class="container">
-    <div class="section-head"><span class="eyebrow">Our Locations</span><h2 id="cl-h">Visit us in person</h2></div>
-    <div class="loc-list">{locs}</div>
+    <div class="section-head"><span class="eyebrow">Our Locations</span><h2 id="cl-h">Visit us in person</h2>
+      <p class="lead">All five California funeral homes are shown on one map. Choose a location for details and directions.</p>
+    </div>
+    <div class="locations-map-layout">
+      <div class="locations-map-panel">
+        <div id="locations-map" class="locations-map" role="region" aria-label="Map of all Aetheria Funeral Homes locations"></div>
+        <div class="locations-map-fallback" id="locations-map-fallback" hidden>
+          <p class="locations-map-fallback__title">Interactive map</p>
+          <p data-fallback-body>An interactive map of all five locations will appear here once a Google Maps API key is added. Until then, use the list below and the Get directions links — they open Google Maps in a new tab.</p>
+        </div>
+        <p class="sr-only" id="locations-map-status" role="status" aria-live="polite"></p>
+      </div>
+      <div class="loc-list" id="locations-list">{locs}</div>
+    </div>
   </div>
 </section>
 '''
     return page("Contact — Aetheria Funeral Homes",
                 "Contact Aetheria Funeral Homes 24/7 by phone, text, fax, or email, or visit one of five locations.",
-                body, "", "contact.html")
+                body, "", "contact.html", scripts=("locations-map.js",))
 
 
 # --------------------------------------------------------------------------

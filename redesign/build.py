@@ -331,7 +331,7 @@ def footer(root):
 </footer>'''
 
 
-def page(title, desc, body, root="", active="", scripts=(), extra_head=""):
+def page(title, desc, body, root="", active="", scripts=(), extra_head="", cache_bust=""):
     js = "".join(f'<script src="{root}assets/{s}" defer></script>' for s in ("site.js",) + tuple(scripts))
     body = body.replace(LEGACY_NAME, SITE_NAME)
     return f'''<!doctype html>
@@ -346,7 +346,7 @@ def page(title, desc, body, root="", active="", scripts=(), extra_head=""):
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&amp;family=Outfit:wght@300;400;500;600;700&amp;display=swap">
 <link rel="stylesheet" href="{root}assets/tokens.css">
-<link rel="stylesheet" href="{root}assets/site.css">
+<link rel="stylesheet" href="{root}assets/site.css{cache_bust}">
 {extra_head}{js}
 </head>
 <body>
@@ -968,8 +968,9 @@ def build_contact(C):
     return page("Contact — Aetheria Funeral Homes",
                 "Contact Aetheria Funeral Homes 24/7 by phone, text, fax, or email, or visit one of five locations.",
                 body, "", "contact.html",
-                scripts=("vendor/leaflet/leaflet.js", "locations-map.js"),
-                extra_head='<link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">\n')
+                scripts=("vendor/leaflet/leaflet.js?v=e8240f9", "locations-map.js?v=e8240f9"),
+                cache_bust="?v=e8240f9",
+                extra_head='<link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css?v=e8240f9">\n')
 
 
 # --------------------------------------------------------------------------

@@ -223,7 +223,8 @@ def load_obits():
         o["death_key"] = o["death"].strftime("%Y%m%d") if o["death"] else "0"
         o["years"] = " – ".join(
             x for x in [o["birth"].strftime("%Y") if o["birth"] else "", o["death"].strftime("%Y") if o["death"] else ""] if x)
-        o["href"] = f"obituary/{o['id']}.html"
+        o["href"] = f"/obituary/{o['id']}/"
+        o["file"] = f"obituary/{o['id']}/index.html"
         obits.append(o)
     obits.sort(key=lambda o: (o["death_key"], o["pub_key"]), reverse=True)
     return obits
@@ -266,20 +267,20 @@ def obit_card(o, root="", lazy=True):
 # --------------------------------------------------------------------------
 # Layout
 # --------------------------------------------------------------------------
-NAV = [("index.html", "Home"), ("obituaries.html", "Obituaries"), ("services.html", "Services"),
-       ("about.html", "About"), ("contact.html", "Contact")]
+NAV = [("/", "Home"), ("/obituaries/", "Obituaries"), ("/services/", "Services"),
+       ("/about/", "About"), ("/contact/", "Contact")]
 
 
 def brand(root, light=False):
     logo = "aetheria-logo-light.png" if light else "aetheria-logo.png"
-    return f'''<a class="brand" href="{root}index.html" aria-label="{SITE_NAME} — home">
-  <img class="brand__logo" src="{root}assets/img/{logo}" alt="{SITE_NAME}" width="1313" height="280">
+    return f'''<a class="brand" href="/" aria-label="{SITE_NAME} — home">
+  <img class="brand__logo" src="/assets/img/{logo}" alt="{SITE_NAME}" width="1313" height="280">
 </a>'''
 
 
 def header(root, active):
     items = "".join(
-        f'<li><a class="nav__link" href="{root}{href}"{" aria-current=\"page\"" if href == active else ""}>{label}</a></li>'
+        f'<li><a class="nav__link" href="{href}"{" aria-current=\"page\"" if href == active else ""}>{label}</a></li>'
         for href, label in NAV)
     return f'''<a class="skip-link" href="#main">Skip to content</a>
 <div class="topbar"><div class="container">
@@ -293,7 +294,7 @@ def header(root, active):
       <ul>{items}</ul>
       <div class="nav__cta">
         <a class="btn btn--ghost btn--sm" href="{tel(PHONE_MAIN)}">{icon("phone")}Call 24/7</a>
-        <a class="btn btn--primary btn--sm" href="{root}contact.html"><span class="lbl-long">Plan a Service</span><span class="lbl-short">Plan</span></a>
+        <a class="btn btn--primary btn--sm" href="/contact/"><span class="lbl-long">Plan a Service</span><span class="lbl-short">Plan</span></a>
       </div>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Open menu">{icon("menu")}</button>
     </nav>
@@ -325,14 +326,14 @@ def footer(root):
     </div>
     <div class="footer-bottom">
       <span>© {YEAR} {SITE_NAME}. All rights reserved.</span>
-      <nav aria-label="Footer">{"".join(f'<a href="{root}{h}">{l}</a>' for h, l in NAV)}</nav>
+      <nav aria-label="Footer">{"".join(f'<a href="{h}">{l}</a>' for h, l in NAV)}</nav>
     </div>
   </div>
 </footer>'''
 
 
 def page(title, desc, body, root="", active="", scripts=(), extra_head="", cache_bust=""):
-    js = "".join(f'<script src="{root}assets/{s}" defer></script>' for s in ("site.js",) + tuple(scripts))
+    js = "".join(f'<script src="/assets/{s}" defer></script>' for s in ("site.js",) + tuple(scripts))
     body = body.replace(LEGACY_NAME, SITE_NAME)
     return f'''<!doctype html>
 <html lang="en">
@@ -345,8 +346,8 @@ def page(title, desc, body, root="", active="", scripts=(), extra_head="", cache
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&amp;family=Outfit:wght@300;400;500;600;700&amp;display=swap">
-<link rel="stylesheet" href="{root}assets/tokens.css">
-<link rel="stylesheet" href="{root}assets/site.css{cache_bust}">
+<link rel="stylesheet" href="/assets/tokens.css">
+<link rel="stylesheet" href="/assets/site.css{cache_bust}">
 {extra_head}{js}
 </head>
 <body>
@@ -403,7 +404,7 @@ def cta_band(root, eyebrow="We are here for you", heading="Whenever you need us,
           <p class="lead">{lead}</p>
           <div class="btn-row" style="margin-top:2rem">
             <a class="btn btn--light" href="{tel(PHONE_MAIN)}">{icon("phone")}Call {PHONE_MAIN}</a>
-            <a class="btn btn--outline-light" href="{root}contact.html">Plan a Service {icon("arrow")}</a>
+            <a class="btn btn--outline-light" href="/contact/">Plan a Service {icon("arrow")}</a>
           </div>
         </div>
         <div class="contact-tiles">
@@ -428,15 +429,15 @@ def service_summaries(C):
         cut = s[:n].rsplit(" ", 1)[0].rstrip(",;:")
         return cut + "…"
     return [
-        ("Funeral Services", "leaf", "services.html#funeral",
+        ("Funeral Services", "leaf", "/services/#funeral",
          trim(C.first("/", "Burial Options"))),
-        ("Cremation", "flame", "services.html#cremation",
+        ("Cremation", "flame", "/services/#cremation",
          trim(C.first("/", "Cremation Options"))),
-        ("Veterans Services", "flag", "services.html#veterans",
+        ("Veterans Services", "flag", "/services/#veterans",
          trim(C.sec("/veterans", "VETERANS")[0])),
-        ("Pre-Planning", "calendar", "services.html#pre-planning",
+        ("Pre-Planning", "calendar", "/services/#pre-planning",
          trim(" ".join(C.sec("/pre-arrangements", "Pre-Arrangements")[:1]))),
-        ("Grief Support", "heart", "services.html#grief",
+        ("Grief Support", "heart", "/services/#grief",
          C.first("/grief-support", "A year of daily grief support").split(" Enter your email")[0] + " We also share helpful grief support resources for every stage of healing."),
     ]
 
@@ -462,8 +463,8 @@ def build_index(C, obits):
       <h1 id="hero-h" class="fade-up d1">Honoring lives, <em>with dignity</em> and care</h1>
       <p class="lead fade-up d2">{esc(welcome.split(". At Continental")[0] + ".")}</p>
       <div class="btn-row fade-up d3">
-        <a class="btn btn--primary" href="contact.html">Plan a Service {icon("arrow")}</a>
-        <a class="btn btn--secondary" href="obituaries.html">{icon("search")}Find an Obituary</a>
+        <a class="btn btn--primary" href="/contact/">Plan a Service {icon("arrow")}</a>
+        <a class="btn btn--secondary" href="/obituaries/">{icon("search")}Find an Obituary</a>
       </div>
       <div class="hero__meta fade-up d3">
         <div><strong>25+</strong><span>Years of experience</span></div>
@@ -480,7 +481,7 @@ def build_index(C, obits):
         <li><span class="ic">{icon("message")}</span><div><small>Text · no calls</small><a href="sms:+13239875025">{PHONE_TEXT}</a></div></li>
         <li><span class="ic">{icon("mail")}</span><div><small>Email</small><a href="mailto:{EMAIL}">{EMAIL}</a></div></li>
       </ul>
-      <a class="btn btn--glow" href="contact.html" style="width:100%">At-need contact {icon("arrow")}</a>
+      <a class="btn btn--glow" href="/contact/" style="width:100%">At-need contact {icon("arrow")}</a>
     </aside>
   </div>
 </section>
@@ -490,7 +491,7 @@ def build_index(C, obits):
     <div class="section-head section-head--split">
       <div><span class="eyebrow">Our Services</span><h2 id="svc-h">A meaningful farewell, <em>your way</em></h2>
       <p class="lead">Every life is unique. We offer a full spectrum of funeral services and products to honor the memory of your loved one.</p></div>
-      <a class="btn btn--ghost" href="services.html">All services {icon("arrow")}</a>
+      <a class="btn btn--ghost" href="/services/">All services {icon("arrow")}</a>
     </div>
     <div class="svc-grid">{svc}</div>
   </div>
@@ -501,7 +502,7 @@ def build_index(C, obits):
     <div class="section-head section-head--split">
       <div><span class="eyebrow">In Loving Memory</span><h2 id="obit-h">Recent obituaries</h2>
       <p class="lead">Remember those we have recently had the honor of serving, and leave a memory for their families.</p></div>
-      <a class="btn btn--secondary" href="obituaries.html">View all obituaries {icon("arrow")}</a>
+      <a class="btn btn--secondary" href="/obituaries/">View all obituaries {icon("arrow")}</a>
     </div>
     <div class="obit-grid">{cards}</div>
   </div>
@@ -521,7 +522,7 @@ def build_index(C, obits):
 '''
     return page("Aetheria Funeral Homes — Honoring lives with dignity and care",
                 "Aetheria Funeral Homes offers funeral, cremation, veterans and pre-planning services across five California locations. Available 24/7 at 1 (800) 990-0890.",
-                body, "", "index.html")
+                body, "", "/")
 
 
 def build_obituaries(obits):
@@ -533,7 +534,7 @@ def build_obituaries(obits):
     body = f'''
 <section class="page-hero" aria-labelledby="ob-h">
   <div class="container">
-    <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span aria-hidden="true">/</span><span aria-current="page">Obituaries</span></nav>
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span aria-current="page">Obituaries</span></nav>
     <span class="eyebrow">In Loving Memory</span>
     <h1 id="ob-h">Obituaries &amp; <em>tributes</em></h1>
     <p class="lead">Celebrate and remember the lives of those we have been entrusted to serve. Search by name to find a loved one, view service details, and share a memory with the family.</p>
@@ -571,7 +572,7 @@ def build_obituaries(obits):
 '''
     return page("Obituaries — Aetheria Funeral Homes",
                 f"Browse {len(obits)} obituaries and service details from Aetheria Funeral Homes.",
-                body, "", "obituaries.html", scripts=("obits.js",))
+                body, "", "/obituaries/", scripts=("obits.js",))
 
 
 def text_paras(t):
@@ -601,7 +602,7 @@ def event_card(e):
 
 
 def build_detail(o, prev_o, next_o):
-    root = "../"
+    root = "/"
     first = o["name"].split()[0] if o["name"] else "your loved one"
     loc = o["loc"]
     meta = []
@@ -652,12 +653,12 @@ def build_detail(o, prev_o, next_o):
             return "<span></span>"
         ic = icon("arrow-left") if cls == "prev" else ""
         ic2 = icon("arrow") if cls == "next" else ""
-        return f'<a class="btn btn--ghost btn--sm" href="{esc(x["id"])}.html" aria-label="{label}: {esc(x["name"])}">{ic}{label}{ic2}</a>'
+        return f'<a class="btn btn--ghost btn--sm" href="/obituary/{esc(x["id"])}/" aria-label="{label}: {esc(x["name"])}">{ic}{label}{ic2}</a>'
 
     body = f'''
 <section class="memorial-hero" aria-labelledby="name-h">
   <div class="container">
-    <nav class="crumbs" aria-label="Breadcrumb"><a href="{root}index.html">Home</a><span aria-hidden="true">/</span><a href="{root}obituaries.html">Obituaries</a><span aria-hidden="true">/</span><span aria-current="page">{esc(o["name"])}</span></nav>
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/obituaries/">Obituaries</a><span aria-hidden="true">/</span><span aria-current="page">{esc(o["name"])}</span></nav>
     <div class="memorial">
       <div class="portrait">{portrait_inner(o, lazy=False)}</div>
       <div>
@@ -705,13 +706,13 @@ def build_detail(o, prev_o, next_o):
   </div>
   <div class="container" style="margin-top:3rem;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap">
     {nav_link(prev_o, "Newer", "prev")}
-    <a class="btn btn--secondary btn--sm" href="{root}obituaries.html">All obituaries</a>
+    <a class="btn btn--secondary btn--sm" href="/obituaries/">All obituaries</a>
     {nav_link(next_o, "Older", "next")}
   </div>
 </section>
 '''
     desc = f'Obituary and service information for {o["name"]}' + (f', {o["years"]}' if o["years"] else "") + ". Aetheria Funeral Homes."
-    return page(f'{o["name"]} — Obituary | Aetheria Funeral Homes', desc, body, root, "obituaries.html")
+    return page(f'{o["name"]} — Obituary | Aetheria Funeral Homes', desc, body, root, "/obituaries/")
 
 
 def opt(title, text, extra=""):
@@ -767,7 +768,7 @@ def build_services(C):
 <section class="page-hero page-hero--silk" aria-labelledby="sv-h">
   <div class="silk" aria-hidden="true"><span></span><span></span><span></span></div>
   <div class="container">
-    <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span aria-hidden="true">/</span><span aria-current="page">Services</span></nav>
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span aria-current="page">Services</span></nav>
     <span class="eyebrow">Our Services</span>
     <h1 id="sv-h">Services shaped around <em>your wishes</em></h1>
     <p class="lead">{esc(C.sec("/", "Welcome to Continental Funeral Home FD 1915")[0].split(". At Continental Funeral Home we appreciate")[0].split("defines us. ")[-1])}.</p>
@@ -807,7 +808,7 @@ def build_services(C):
            f'<p>{esc(pre[0])}</p>',
            '<div class="opt-grid">' + opt("Peace of mind", pre[1]) + opt("Plan from home", pre[2].replace(" by clicking the button below", "")
            .replace(" See the form below for details.", ""))
-           + f'<article class="card opt opt--wide opt--cta" style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap"><div><h3>Start your pre-arrangements</h3><p>Speak with a funeral counselor at {PHONE_MAIN}.</p></div><a class="btn btn--light" href="contact.html">Plan a Service {icon("arrow")}</a></article>'
+           + f'<article class="card opt opt--wide opt--cta" style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap"><div><h3>Start your pre-arrangements</h3><p>Speak with a funeral counselor at {PHONE_MAIN}.</p></div><a class="btn btn--light" href="/contact/">Plan a Service {icon("arrow")}</a></article>'
            + "</div>")}
   {section("arrangements", "box", "Making Arrangements", "Caskets, urns &amp; keepsakes",
            f'<p>{esc(C.sec("/making-arrangements", "only the finest quality")[0])}</p>',
@@ -824,7 +825,7 @@ def build_services(C):
 '''
     return page("Services — Aetheria Funeral Homes",
                 "Funeral, burial, cremation, repatriation, veterans, and pre-planning services from Aetheria Funeral Homes.",
-                body, "", "services.html")
+                body, "", "/services/")
 
 
 def build_about(C):
@@ -840,7 +841,7 @@ def build_about(C):
     body = f'''
 <section class="page-hero" aria-labelledby="ab-h">
   <div class="container">
-    <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span aria-hidden="true">/</span><span aria-current="page">About</span></nav>
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span aria-current="page">About</span></nav>
     <span class="eyebrow">About Us</span>
     <h1 id="ab-h">Every life is unique, <em>every farewell</em> personal</h1>
     <p class="lead">{esc(approach)}</p>
@@ -897,7 +898,7 @@ def build_about(C):
 '''
     return page("About — Aetheria Funeral Homes",
                 "Founded and directed by Magda Maldonado, Aetheria Funeral Homes has served families for more than 25 years across five California locations.",
-                body, "", "about.html")
+                body, "", "/about/")
 
 
 def build_contact(C):
@@ -907,7 +908,7 @@ def build_contact(C):
     body = f'''
 <section class="page-hero" aria-labelledby="ct-h">
   <div class="container">
-    <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span aria-hidden="true">/</span><span aria-current="page">Contact</span></nav>
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span aria-current="page">Contact</span></nav>
     <span class="eyebrow">Contact &amp; Plan a Service</span>
     <h1 id="ct-h">We are here, <em>whenever you need us</em></h1>
     <p class="lead">{esc(intro)}</p>
@@ -967,7 +968,7 @@ def build_contact(C):
 '''
     return page("Contact — Aetheria Funeral Homes",
                 "Contact Aetheria Funeral Homes 24/7 by phone, text, fax, or email, or visit one of five locations.",
-                body, "", "contact.html",
+                body, "", "/contact/",
                 scripts=("vendor/leaflet/leaflet.js?v=e8240f9", "locations-map.js?v=e8240f9"),
                 cache_bust="?v=e8240f9",
                 extra_head='<link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css?v=e8240f9">\n')
@@ -987,15 +988,33 @@ def main():
     ob_dir = os.path.join(HERE, "obituary")
     if os.path.isdir(ob_dir):
         shutil.rmtree(ob_dir)
+    def stub(url):
+        absurl = "https://aetheriafuneralhomes.com" + url
+        return (
+            "<!doctype html>\n<html lang=\"en\">\n<head>\n"
+            f"<meta charset=\"utf-8\">\n<title>Moved to {absurl}</title>\n"
+            f"<link rel=\"canonical\" href=\"{absurl}\">\n"
+            f"<meta http-equiv=\"refresh\" content=\"0;url={url}\">\n"
+            f"<script>location.replace({url!r});</script>\n"
+            "</head>\n<body>\n"
+            f"<p>This page has moved to <a href=\"{url}\">{absurl}</a>.</p>\n"
+            "</body>\n</html>\n"
+        )
+
     write("index.html", build_index(C, obits))
-    write("obituaries.html", build_obituaries(obits))
-    write("services.html", build_services(C))
-    write("about.html", build_about(C))
-    write("contact.html", build_contact(C))
+    write("obituaries/index.html", build_obituaries(obits))
+    write("obituaries.html", stub("/obituaries/"))
+    write("services/index.html", build_services(C))
+    write("services.html", stub("/services/"))
+    write("about/index.html", build_about(C))
+    write("about.html", stub("/about/"))
+    write("contact/index.html", build_contact(C))
+    write("contact.html", stub("/contact/"))
     for i, o in enumerate(obits):
         prev_o = obits[i - 1] if i > 0 else None
         next_o = obits[i + 1] if i + 1 < len(obits) else None
-        write(o["href"], build_detail(o, prev_o, next_o))
+        write(o["file"], build_detail(o, prev_o, next_o))
+        write(f"obituary/{o['id']}.html", stub(o["href"]))
     real = sum(1 for o in obits if o["text"])
     photos = sum(1 for o in obits if o["has_photo"])
     print(f"Built 5 main pages + {len(obits)} obituary pages "
